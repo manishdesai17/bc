@@ -1,0 +1,47 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract FundMe {
+   
+    mapping(address => uint256) public addressToAmountFunded;
+
+    // Contract owner
+    address public owner;
+
+    // Constructor: set owner as deployer
+    constructor() {
+        owner = msg.sender;
+    }
+
+    // Function to accept ETH
+    function fund() public payable {
+        require(msg.value > 0, "You must send some ETH!");
+        addressToAmountFunded[msg.sender] += msg.value;
+    }
+
+    // Get balance of contract in Wei
+    function getContractBalanceWei() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+
+    // Convert Ether → Wei & Gwei
+    function convertFromEther(uint256 amountInEther) public pure returns (uint256 weiValue, uint256 gweiValue) {
+        weiValue = amountInEther * 1 ether;   
+        gweiValue = weiValue / 1 gwei;        
+    }
+
+    // Example: fixed conversion values
+    function getConversionExamples() public pure returns (uint256, uint256, uint256) {
+        uint256 oneWei = 1 wei;         
+        uint256 oneGwei = 1 gwei;       
+        uint256 oneEther = 1 ether;     
+        return (oneWei, oneGwei, oneEther);
+    }
+
+    // Function to withdraw all funds (only owner)
+    function withdraw() public {
+        require(msg.sender == owner, "Only owner can withdraw");
+        payable(msg.sender).transfer(address(this).balance);
+    }
+}
