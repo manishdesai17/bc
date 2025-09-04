@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+contract pro4{
+uint256 public number;
+function setNumber(uint256 num)public {
+    number=num;
+}
+}
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+import "./pro4.sol";
+contract prog4{
+    pro4[] public proarray;
+
+    function createSimpleStorage() public{
+        pro4 p =new pro4();
+        proarray.push(p);
+    }
+    function countSimpleStorage() public view returns (uint256){
+         return proarray.length;  
+    }
+    function setIndexNumber(uint256 index,uint256 num) public
+    {
+        pro4 p = proarray[index];
+        p.setNumber(num);
+    }
+
+    function getIndexNumber(uint256 index) public view returns (uint256) {
+        pro4 p =proarray[index];
+        return p.number();
+    }
+}

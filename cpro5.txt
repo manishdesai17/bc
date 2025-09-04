@@ -1,0 +1,28 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+contract FundMe3 {
+    mapping(address =>uint256) public AddressToAmount;
+    address public owner;
+
+    constructor() {
+        owner=msg.sender;
+    }
+
+    function fund() public payable {
+        require(msg.value>0 ,"send Eth");
+        AddressToAmount[msg.sender]+msg.value;
+    }
+
+    function getContractBalanceWei() public view returns (uint256) {
+        return address(this).balance;
+    }
+    function converter() public pure returns(uint256,uint256,uint256){
+        return (1 wei ,1 gwei,1 ether);
+    }
+
+    function withdrow() public {
+        require(msg.sender==owner,"ownder only");
+        payable(owner).transfer(address(this).balance);
+
+    }
+}
